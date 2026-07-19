@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Camera, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlaceholderImage } from "@/components/ui/placeholder-image";
+import { GalleryTile } from "@/components/ui/gallery-tile";
 import { Select } from "@/components/ui/select";
 import type { GalleryImage } from "@/lib/types";
 
@@ -76,7 +76,7 @@ export function GalleryClient({ images }: { images: GalleryImage[] }) {
             className={`group relative mb-3 block w-full overflow-hidden rounded-sm md:mb-4 ${sizeHeight[img.size]}`}
           >
             <div className="h-full w-full transition-transform duration-700 ease-premium group-hover:scale-110">
-              <PlaceholderImage tone={img.tone} icon={Camera} className="h-full" />
+              <GalleryTile image={img} icon={Camera} className="h-full" />
             </div>
             <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-black/0 to-black/0 p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <p className="font-mono text-[10px] uppercase tracking-widest2 text-foreground">
@@ -108,7 +108,7 @@ export function GalleryClient({ images }: { images: GalleryImage[] }) {
               className="relative h-[70vh] w-full max-w-3xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <PlaceholderImage tone={active.tone} icon={Camera} className="h-full rounded-md" />
+              <GalleryTile image={active} icon={Camera} className="h-full rounded-md" sizes="768px" />
               <button
                 onClick={() => setActive(null)}
                 className="absolute -top-12 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-foreground/30 text-foreground"

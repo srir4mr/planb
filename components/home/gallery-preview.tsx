@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Camera } from "lucide-react";
 import { Reveal } from "@/components/reveal";
-import { PlaceholderImage } from "@/components/ui/placeholder-image";
+import { GalleryTile } from "@/components/ui/gallery-tile";
 import { galleryImages } from "@/lib/data/gallery";
 
 const preview = galleryImages.slice(0, 7);
@@ -37,7 +37,7 @@ export function GalleryPreview() {
                 className={`group relative overflow-hidden rounded-sm ${spans[i % spans.length]}`}
               >
                 <div className="h-full w-full transition-transform duration-700 ease-premium group-hover:scale-110">
-                  <PlaceholderImage tone={img.tone} icon={Camera} className="h-full" />
+                  <GalleryTile image={img} icon={Camera} className="h-full" sizes="(min-width: 768px) 25vw, 50vw" />
                 </div>
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-black/0 to-black/0 p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <p className="font-mono text-[10px] uppercase tracking-widest2 text-foreground">

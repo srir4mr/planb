@@ -51,6 +51,8 @@ export interface PreviousRide {
 export interface GalleryImage {
   id: string;
   tone: PlaceholderTone;
+  src?: string;
+  alt?: string;
   destination: string;
   year: number;
   ride: string;
