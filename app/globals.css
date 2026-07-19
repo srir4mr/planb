@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-foreground;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-elevated;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-dark;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .container-px {
+    @apply px-6 md:px-10 lg:px-16;
+  }
+
+  .section-y {
+    @apply py-24 md:py-32;
+  }
+
+  .heading-eyebrow {
+    @apply font-mono text-xs uppercase tracking-widest2 text-accent;
+  }
+
+  .grain-overlay {
+    @apply pointer-events-none absolute inset-0 bg-grain mix-blend-overlay opacity-20;
+  }
+
+  .metallic-text {
+    background: linear-gradient(135deg, #f1eee6 0%, #c6a15b 45%, #f1eee6 55%, #9c9a97 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .fade-mask-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+}
