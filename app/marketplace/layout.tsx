@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/marketplace/cart-provider";
 import { OrdersProvider } from "@/components/marketplace/orders-provider";
 import { ApplicationsProvider } from "@/components/marketplace/applications-provider";
 import { MarketplaceSubNav } from "@/components/marketplace/sub-nav";
+import { AiAssistant } from "@/components/marketplace/ai-assistant";
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +23,7 @@ export default function MarketplaceLayout({ children }: { children: React.ReactN
             <div className="pt-20">
               <MarketplaceSubNav />
               {children}
+              <AiAssistant />
             </div>
           </ApplicationsProvider>
         </OrdersProvider>
