@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Bike, Plus, ShoppingBag } from "lucide-react";
+import { ChevronDown, Bike, Plus, ShoppingBag, Package } from "lucide-react";
 import { useGarage } from "@/components/marketplace/garage-provider";
 import { useCart } from "@/components/marketplace/cart-provider";
 import { categories } from "@/lib/marketplace/data/categories";
@@ -14,6 +14,9 @@ export function MarketplaceSubNav() {
   const { vehicles, activeVehicle, setActiveVehicleId } = useGarage();
   const { totalItems } = useCart();
   const [open, setOpen] = useState(false);
+
+  const isBackOffice = pathname.startsWith("/marketplace/supplier/dashboard") || pathname.startsWith("/marketplace/admin");
+  if (isBackOffice) return null;
 
   return (
     <div className="sticky top-20 z-40 border-b border-border-hair bg-background/95 backdrop-blur-xl">
@@ -36,6 +39,14 @@ export function MarketplaceSubNav() {
           <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-background to-transparent" />
         </div>
         <span className="flex-1 md:hidden" />
+
+        <Link
+          href="/marketplace/orders"
+          className="hidden shrink-0 rounded-sm border border-border p-2 text-foreground-muted transition-colors hover:border-accent/50 hover:text-accent sm:flex"
+          aria-label="My Orders"
+        >
+          <Package className="h-4 w-4" />
+        </Link>
 
         <Link
           href="/marketplace/cart"

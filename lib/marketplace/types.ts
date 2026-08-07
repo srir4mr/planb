@@ -113,3 +113,45 @@ export interface Review {
   date: string;
   helpfulCount: number;
 }
+
+export const COMMISSION_RATE = 0.12;
+
+export type OrderStatus = "HELD" | "SHIPPED" | "DELIVERED" | "RELEASED" | "DISPUTED" | "REFUNDED";
+
+export interface OrderLineItem {
+  productId: string;
+  supplierId: string;
+  title: string;
+  qty: number;
+  unitPrice: number;
+}
+
+export interface Order {
+  id: string;
+  createdAt: string;
+  customerName: string;
+  phone: string;
+  address: string;
+  items: OrderLineItem[];
+  subtotal: number;
+  shipping: number;
+  total: number;
+  status: OrderStatus;
+  disputeReason?: string;
+  statusHistory: { status: OrderStatus; at: string }[];
+}
+
+export type SupplierApplicationStatus = "pending" | "approved" | "rejected";
+
+export interface SupplierApplication {
+  id: string;
+  createdAt: string;
+  businessName: string;
+  gst: string;
+  contactName: string;
+  phone: string;
+  email: string;
+  categoryId: string;
+  brandAuth: string;
+  status: SupplierApplicationStatus;
+}

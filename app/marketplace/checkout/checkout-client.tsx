@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/marketplace/cart-provider";
+import { useOrders } from "@/components/marketplace/orders-provider";
 
 function formatINR(value: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
@@ -14,12 +15,36 @@ function formatINR(value: number) {
 
 export function CheckoutClient() {
   const { items, subtotal, clear } = useCart();
+  const { addOrder } = useOrders();
   const [placed, setPlaced] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
   const [payment, setPayment] = useState<"upi" | "card" | "netbanking">("upi");
   const shipping = subtotal > 5000 ? 0 : 199;
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const name = String(data.get("name") ?? "");
+    const phone = String(data.get("phone") ?? "");
+    const address = [data.get("address"), data.get("city"), data.get("state"), data.get("pincode")].filter(Boolean).join(", ");
+
+    const order = addOrder({
+      customerName: name,
+      phone,
+      address,
+      items: items.map(({ product, qty }) => ({
+        productId: product.id,
+        supplierId: product.supplierId,
+        title: product.title,
+        qty,
+        unitPrice: product.price,
+      })),
+      subtotal,
+      shipping,
+      total: subtotal + shipping,
+    });
+
+    setOrderId(order.id);
     setPlaced(true);
     clear();
   }
@@ -29,14 +54,18 @@ export function CheckoutClient() {
       <div className="mx-auto flex max-w-lg flex-col items-center gap-4 rounded-md border border-success/30 bg-success/10 px-8 py-16 text-center">
         <CheckCircle2 className="h-12 w-12 text-success" />
         <h2 className="font-display text-2xl font-bold uppercase tracking-tight">Order Placed</h2>
+        <p className="font-mono text-xs uppercase tracking-widest2 text-foreground-muted">{orderId}</p>
         <p className="text-foreground-muted">
           Your payment is held in escrow. Suppliers have been notified and will ship shortly — funds release only after you confirm delivery.
         </p>
-        <Link href="/marketplace">
-          <Button variant="primary" className="mt-2">
-            Continue Browsing
-          </Button>
-        </Link>
+        <div className="mt-2 flex gap-3">
+          <Link href="/marketplace/orders">
+            <Button variant="primary">View My Orders</Button>
+          </Link>
+          <Link href="/marketplace">
+            <Button variant="outline">Continue Browsing</Button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -57,27 +86,27 @@ export function CheckoutClient() {
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <Label htmlFor="co-name">Full Name</Label>
-              <Input id="co-name" placeholder="Your name" required />
+              <Input id="co-name" name="name" placeholder="Your name" required />
             </div>
             <div>
               <Label htmlFor="co-phone">Phone</Label>
-              <Input id="co-phone" type="tel" placeholder="+91 00000 00000" required />
+              <Input id="co-phone" name="phone" type="tel" placeholder="+91 00000 00000" required />
             </div>
             <div>
               <Label htmlFor="co-pincode">Pincode</Label>
-              <Input id="co-pincode" placeholder="641001" required />
+              <Input id="co-pincode" name="pincode" placeholder="641001" required />
             </div>
             <div className="sm:col-span-2">
               <Label htmlFor="co-address">Address</Label>
-              <Input id="co-address" placeholder="House no, street, area" required />
+              <Input id="co-address" name="address" placeholder="House no, street, area" required />
             </div>
             <div>
               <Label htmlFor="co-city">City</Label>
-              <Input id="co-city" placeholder="Coimbatore" required />
+              <Input id="co-city" name="city" placeholder="Coimbatore" required />
             </div>
             <div>
               <Label htmlFor="co-state">State</Label>
-              <Input id="co-state" placeholder="Tamil Nadu" required />
+              <Input id="co-state" name="state" placeholder="Tamil Nadu" required />
             </div>
           </div>
         </div>
