@@ -67,4 +67,12 @@
   .fade-mask-b {
     mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }

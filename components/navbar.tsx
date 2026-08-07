@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/marketplace", label: "Marketplace" },
   { href: "/upcoming-rides", label: "Upcoming Rides" },
   { href: "/previous-rides", label: "Previous Rides" },
   { href: "/gallery", label: "Gallery" },
@@ -18,6 +19,10 @@ const NAV_LINKS = [
   { href: "/join", label: "Join" },
   { href: "/contact", label: "Contact" },
 ];
+
+function isActive(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -60,7 +65,7 @@ export function Navbar() {
               href={link.href}
               className={cn(
                 "font-mono text-xs uppercase tracking-widest2 transition-colors duration-200 hover:text-accent",
-                pathname === link.href ? "text-accent" : "text-foreground-muted"
+                isActive(pathname, link.href) ? "text-accent" : "text-foreground-muted"
               )}
             >
               {link.label}
@@ -106,7 +111,7 @@ export function Navbar() {
                     href={link.href}
                     className={cn(
                       "block border-b border-border-hair py-4 font-display text-2xl font-semibold uppercase tracking-tightest",
-                      pathname === link.href ? "text-accent" : "text-foreground"
+                      isActive(pathname, link.href) ? "text-accent" : "text-foreground"
                     )}
                   >
                     {link.label}
