@@ -7,15 +7,23 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/lib/marketplace/data/categories";
-import { BIKE_BRANDS } from "@/lib/marketplace/types";
-import { YEAR_OPTIONS } from "@/lib/marketplace/data/bikes";
+import { BIKE_BRANDS, type BikeBrand } from "@/lib/marketplace/types";
+import { BIKE_MODELS_BY_BRAND, YEAR_OPTIONS } from "@/lib/marketplace/data/bikes";
 
 export function SearchHero() {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
   const [year, setYear] = useState("");
+
+  const models = brand ? BIKE_MODELS_BY_BRAND[brand as BikeBrand] : [];
+
+  function handleBrandChange(value: string) {
+    setBrand(value);
+    setModel("");
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -23,6 +31,7 @@ export function SearchHero() {
     if (q) params.set("q", q);
     if (category) params.set("category", category);
     if (brand) params.set("brand", brand);
+    if (model) params.set("model", model);
     if (year) params.set("year", year);
     router.push(`/marketplace/search?${params.toString()}`);
   }
@@ -44,12 +53,20 @@ export function SearchHero() {
         </Button>
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3">
-        <Select value={brand} onChange={(e) => setBrand(e.target.value)} aria-label="Bike brand">
+      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <Select value={brand} onChange={(e) => handleBrandChange(e.target.value)} aria-label="Bike brand">
           <option value="">Any bike brand</option>
           {BIKE_BRANDS.map((b) => (
             <option key={b} value={b}>
               {b}
+            </option>
+          ))}
+        </Select>
+        <Select value={model} onChange={(e) => setModel(e.target.value)} disabled={!brand} aria-label="Bike model">
+          <option value="">{brand ? "Any model" : "Select brand first"}</option>
+          {models.map((m) => (
+            <option key={m} value={m}>
+              {m}
             </option>
           ))}
         </Select>

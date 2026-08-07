@@ -13,16 +13,17 @@ export const metadata: Metadata = {
 };
 
 interface SearchPageProps {
-  searchParams: { q?: string; category?: string; brand?: string; year?: string; tag?: string };
+  searchParams: { q?: string; category?: string; brand?: string; model?: string; year?: string; tag?: string };
 }
 
 export default function SearchPage({ searchParams }: SearchPageProps) {
-  const { q, category, brand, year, tag } = searchParams;
+  const { q, category, brand, model, year, tag } = searchParams;
   let results = products;
 
   if (category) results = results.filter((p) => p.categoryId === category);
   if (tag) results = results.filter((p) => p.tags.includes(tag as ProductTag));
   if (brand) results = results.filter((p) => p.fitment.some((f) => f.bikeBrand === brand));
+  if (model) results = results.filter((p) => p.fitment.some((f) => f.bikeModel === model));
   if (year) {
     const y = Number(year);
     results = results.filter((p) => p.fitment.length === 0 || p.fitment.some((f) => y >= f.yearFrom && y <= f.yearTo));
@@ -38,7 +39,7 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
     );
   }
 
-  const hasFilters = Boolean(q || category || brand || year || tag);
+  const hasFilters = Boolean(q || category || brand || model || year || tag);
 
   return (
     <div className="pb-24 pt-10">
